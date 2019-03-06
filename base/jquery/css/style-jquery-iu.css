@@ -1,0 +1,17 @@
+#sortable1, #sortable2
+{
+	width: 95%;
+	background-color: #2773ae;
+	list-style-type: none;
+	margin: 0px;
+	padding: 8px 2px;
+	float: left;
+	margin-right: 10px;
+}
+#sortable1 li, #sortable2 li
+{
+	background-color: #fff;
+	margin: 3px 0px 3px 3px;
+	padding: 2px 0px 2px 3px;
+	width: 97%;
+}

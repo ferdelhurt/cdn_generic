@@ -1,0 +1,65 @@
+
+/* Body
+---------------------------------------------------------------------- */
+
+    /* Maquinary -- text for each item
+    ---------------------------------------------------------------------- */
+
+.team-member .details {
+    font-family: Arial, sans-serif;
+    line-height: 10px;
+}
+
+.team-member hr {
+    margin: 0px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #fff;
+}
+
+.team-member hr.top {
+    margin-bottom: 4px;
+}
+
+.team-member hr.bottom {
+    margin-top: 5px;
+}
+
+.team-member p {
+    color: #666666;
+    margin: 0px;
+    padding: 0px;
+}
+
+.team-member p.status {
+    padding: 0px;
+}
+
+.team-member p.model {
+    padding: 0px;
+}
+
+.team-member p.ubication {
+    padding-top: 3px;
+    padding-bottom: 0px;
+}
+
+.team-member .details h4 {
+    margin: 0px;
+    color: #666666;
+    font-weight: normal;
+}
+
+.traslado {
+    margin-top: 10px;
+}
+
+    /* footer -- Color that link text
+    ---------------------------------------------------------------------- */
+
+address a {
+    color: #fff;
+}
+
+address a:hover {
+    color: #ccc;
+}

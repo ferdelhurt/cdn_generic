@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+#content {
+    margin-left:10px;
+    margin-right:10px;
+}
+
+div.inline-block.controlador {
+    margin: 20px 10px 35px 20px;
+    text-align: left;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+}
+
+
+.table th, .table td {
+    padding: 2px 5px 2px 5px;
+    vertical-align: middle;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+    font-size: 13px;
+    line-height: 15px;
+    margin-bottom: 1px;
+    padding: 2px 2px;
+}

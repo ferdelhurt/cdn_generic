@@ -1,0 +1,52 @@
+/*Custom for custom_css CSS*/
+
+
+/* Default */
+@media (min-width: 980px) {
+    .member-divider {
+        margin-left: 20px;
+    }
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+    .member-divider {
+        margin-left: 20px;
+    }
+}
+
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    .member-divider {
+        margin-left: 0;
+    }
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    .member-divider {
+        margin-left: 0;
+    }
+}
+
+
+/*Custom Landscapes End*/
+
+input.search-maquinary {
+    color: #ccc;
+}
+
+.member-divider {
+    margin-bottom: 20px;
+    padding: 10px 0px 0px 0px;
+}
+
+.portfolio-nav {
+    overflow: visible;
+}
+
+.two-columns-left {
+    border-left: none;
+    padding: 21px 0 0 19px;
+}
