@@ -11,6 +11,8 @@ live
 
 *.beautified.*
 
+*/*.json
+
 
 # images
 #-------------------------
