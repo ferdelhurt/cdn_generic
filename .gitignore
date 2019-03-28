@@ -3,7 +3,10 @@
 .htaccess-1
 
 
+plugins-x*
+
 plugins/mdl-*
+
 
 
 live
@@ -37,6 +40,16 @@ live
 #-------------------------
 
 pro/
+
+
+####################################
+# Automatization
+####################################
+gulpfile.js
+node_modules/
+
+package*.json
+
 
 
 # IDE Files

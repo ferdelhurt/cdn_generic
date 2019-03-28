@@ -6,15 +6,15 @@
 	<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
 
 	<title>ColReorder example - Individual column filtering</title>
-	<link rel="stylesheet" type="text/css" href="../../../media/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="../../../css/jquery.dataTables.css">
 	<link rel="stylesheet" type="text/css" href="../css/dataTables.colReorder.css">
 	<link rel="stylesheet" type="text/css" href="../../../examples/resources/syntax/shCore.css">
 	<link rel="stylesheet" type="text/css" href="../../../examples/resources/demo.css">
 	<style type="text/css" class="init">
 
 	</style>
-	<script type="text/javascript" language="javascript" src="../../../media/js/jquery.js"></script>
-	<script type="text/javascript" language="javascript" src="../../../media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" language="javascript" src="../../../../jquery/jquery-2.2.3.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../../../../js/jquery.dataTables.js"></script>
 	<script type="text/javascript" language="javascript" src="../js/dataTables.colReorder.js"></script>
 	<script type="text/javascript" language="javascript" src="../../../examples/resources/syntax/shCore.js"></script>
 	<script type="text/javascript" language="javascript" src="../../../examples/resources/demo.js"></script>
@@ -27,12 +27,12 @@ $(document).ready(function() {
         var title = $('#example thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
     } );
- 
+
     // DataTable
     var table = $('#example').DataTable( {
 		dom: 'Rlfrtip'
 	} );
-     
+
     // Apply the filter
     $("#example tfoot input").on( 'keyup change', function () {
         table
@@ -559,12 +559,12 @@ $(document).ready(function() {
         var title = $('#example thead th').eq( $(this).index() ).text();
         $(this).html( '&lt;input type=&quot;text&quot; placeholder=&quot;Search '+title+'&quot; /&gt;' );
     } );
- 
+
     // DataTable
     var table = $('#example').DataTable( {
 		dom: 'Rlfrtip'
 	} );
-     
+
     // Apply the filter
     $(&quot;#example tfoot input&quot;).on( 'keyup change', function () {
         table
@@ -578,9 +578,9 @@ $(document).ready(function() {
 					example:</p>
 
 					<ul>
-						<li><a href="../../../media/js/jquery.js">../../../media/js/jquery.js</a></li>
+						<li><a href="../../../../js/jquery.js">../../../../js/jquery.js</a></li>
 						<li><a href=
-						"../../../media/js/jquery.dataTables.js">../../../media/js/jquery.dataTables.js</a></li>
+						"../../../../js/jquery.dataTables.js">../../../../js/jquery.dataTables.js</a></li>
 						<li><a href="../js/dataTables.colReorder.js">../js/dataTables.colReorder.js</a></li>
 					</ul>
 				</div>
@@ -602,7 +602,7 @@ $(document).ready(function() {
 
 					<ul>
 						<li><a href=
-						"../../../media/css/jquery.dataTables.css">../../../media/css/jquery.dataTables.css</a></li>
+						"../../../../css/jquery.dataTables.css">../../../../css/jquery.dataTables.css</a></li>
 						<li><a href="../css/dataTables.colReorder.css">../css/dataTables.colReorder.css</a></li>
 					</ul>
 				</div>
