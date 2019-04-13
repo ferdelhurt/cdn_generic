@@ -1,19 +1,24 @@
 
 url         = base_url+url_dir+url_pag;
 
+b_url       = base_url+url_dir+url_pag;
+p_url       = b_url+url_pag;
+
+
 sino        = [{"id":"1","ino":"SI"},{"id":"0","ino":"NO"}];
-cove        = [{"id":"0","ino":"Compras"},{"id":"1","ino":"Ventas"},{"id":"2","ino":"Prof. Inde. - Anual"}];
+cove        = [{"id":"0","ino":"Compras"},{"id":"1","ino":"Ventas"}];
 
 facexen     = [{"id":"0","ino":"Pocentaje"},{"id":"1","ino":"Monto Fijo"}];
 
 vs_ad       = {"ta":{"1":"Activo","0":"Inactivo"},"td":{"1":"Eliminado","0":"No Eliminado"}};
 
+vs_sn       = {"1":"Si","0":"No"};
+
 ff_icons    = {"flu":{"1":"icon-lock","0":"icon-unlock"},"cok":{"1":"icon-ok-circle","0":"icon-remove"},"rem":{"0":"icon-remove"},"gru":{"0":"icon-group"}};
 
 fshare      = [{"id":"1","ino":"Privada"},{"id":"0","ino":"Publica / Compartida"}];
 
-dfmes       = [{"id":"1","ino":"ENE"},{"id":"2","ino":"FEB"},{"id":"3","ino":"MAR"},{"id":"4","ino":"ABR"},{"id":"5","ino":"MAY"},{"id":"6","ino":"JUN"},{"id":"7","ino":"JUL"},{"id":"8","ino":"AGO"},{"id":"9","ino":"SEP"},{"id":"10","ino":"OCT"},{"id":"11","ino":"NOV"},{"id":"12","ino":"DIC"}]
-
+dfmes       = [{"id":"1","ino":"ENE"},{"id":"2","ino":"FEB"},{"id":"3","ino":"MAR"},{"id":"4","ino":"ABR"},{"id":"5","ino":"MAY"},{"id":"6","ino":"JUN"},{"id":"7","ino":"JUL"},{"id":"8","ino":"AGO"},{"id":"9","ino":"SEP"},{"id":"10","ino":"OCT"},{"id":"11","ino":"NOV"},{"id":"12","ino":"DIC"}];
 
 
 dtbl_bool   = false;
@@ -21,6 +26,13 @@ dtbl_bool   = false;
 dtbl_ini    = 0;
 dtbl_end    = 50;
 
+dtbl_lmt    = 750;
+
+
+/*
+    height of de the scroll
+*/
+scroll_h    = 17;
 
 // ---------------------------------
 // Code Extern
@@ -324,7 +336,7 @@ function build_table()
 
 function build_table_verify()
 {
-    if ( typeof(dtbl) !== 'undefined' && typeof(dtbl) === 'object' && dtbl != null && dtbl.length > 0 && dtbl.length < dtbl_lmt)
+    if ( typeof(dtbl) !== 'undefined' && typeof dtbl_bool =="undefined" && typeof(dtbl) === 'object' && dtbl != null && dtbl.length > 0 && dtbl.length < dtbl_lmt)
     {
         construct_table();
 
@@ -400,7 +412,7 @@ function form_error_continue(id, dt)
 {
     jQuery( id ).append( jQuery( "#form-error-continue-tmpl" ).tmpl( dt ) );
 
-    jQuery( '.alert' ).delay( 4500 ).fadeOut( 500 );
+    jQuery( '.alert.alert-success' ).delay( 4500 ).fadeOut( 500 );
 }
 
 function select_option(id)
@@ -485,6 +497,12 @@ function fill_ad(tp,dt)
 
 }
 
+function fill_sn(dt)
+{
+    return vs_sn[dt];
+
+}
+
 function fill_ic(tp,dt)
 {
     return ff_icons[tp][dt];
@@ -515,7 +533,7 @@ function ini_srtbl()
     jQuery(function(){
         jQuery( "ul.droptrue" ).sortable({
             connectWith: "ul",
-            dropOnEmpty: false
+            dropOnEmpty: true
         });
 
         jQuery( "ul.dropfalse" ).sortable({
@@ -523,22 +541,27 @@ function ini_srtbl()
             //dropOnEmpty: false
         });
 
-        jQuery( "#srtbl1, #srtbl2" ).disableSelection();
+        jQuery( "#srtbl1,#srtbl2,#srtbl3" ).disableSelection();
     });
 }
 
-function recargar_listas(srtbl_s, srtbl_n)
+function recargar_listas(arr_srtbl)
 {
-    if( srtbl_n != null && srtbl_n != "" && srtbl_n.length > 0 )
-        jQuery( "#srtbl1" ).html( jQuery( "#v-item-cuenta" ).tmpl( srtbl_n ) );
-    else
-        jQuery( "#srtbl1" ).html( "" );
+    var i = 1;
 
-    if( srtbl_s != null  && srtbl_s != "" && srtbl_s.length > 0 )
-        jQuery( "#srtbl2" ).html( jQuery( "#v-item-cuenta" ).tmpl( srtbl_s ) );
-    else
-        jQuery( "#srtbl2" ).html( "" );
+    if (Object.keys(arr_srtbl).length > 0)
+        for (var vk in arr_srtbl)
+        {
+            if( arr_srtbl[vk] != null && arr_srtbl[vk] != "" )
+                jQuery( "#srtbl-col" + i ).html(
+                    jQuery( "#v-item" ).tmpl( arr_srtbl[vk] )
+                );
+            else
+                jQuery( "#srtbl-col" + i ).html( "" );
 
+            i++;
+
+        }
 }
 
 
@@ -651,48 +674,71 @@ function tablecreate_body(vdt)
 
 function tableCreate(id,data,tblid,tblcss,dhead)
 {
-    var tbl = document.createElement('table');
-    var thd = document.createElement('thead');
-
-    var counte  = 0;
-    var tr      = document.createElement('tr');
-
-    tbl.setAttribute('class',   tblcss);
-    tbl.setAttribute('id',      tblid);
-
-    for (var key in data[0])
+    if (data)
     {
-        var td = document.createElement('td');
+        var tbl = document.createElement('table');
+        var thd = document.createElement('thead');
 
-        if (typeof dhead[counte] !== 'undefined')
+        var counte  = 0;
+        var tr      = document.createElement('tr');
+
+        tbl.setAttribute('class',   tblcss.tb);
+        tbl.setAttribute('id',      tblid);
+
+
+        var ts = 0,
+            ccr = Object.keys(tblcss.td.w).length;
+
+
+        for (var i = ccr - 1; i >= 0; i--) {
+            ts += tblcss.td.w[i];
+        };
+
+        ts = ( 100 - ts ) / ( tblcss.td.cc - ccr );
+
+        tblcss.td.w["dflt"] = ts;
+
+        for (var key in data[0])
         {
-            td.appendChild(document.createTextNode(dhead[counte]));
-        }
-        else
+            var td = document.createElement('td');
+
+            if (tblcss.td.hasOwnProperty) {
+                td.setAttribute("width", (typeof tblcss.td.w[counte] !== "undefined")? tblcss.td.w[counte] + "%" : tblcss.td.w["dflt"] + "%" );
+            };
+
+            if (typeof dhead[counte] !== 'undefined')
+            {
+                td.appendChild(document.createTextNode(dhead[counte]));
+            }
+            else
+            {
+                td.appendChild(document.createTextNode(key));
+            }
+
+            tr.appendChild(td)
+
+            counte++;
+        };
+
+        thd.appendChild(tr);
+        tbl.appendChild(thd);
+
+        var tbd = document.createElement('tbody');
+
+        if (data != null && data != "" && Object.keys(data).length > 0)
         {
-            td.appendChild(document.createTextNode(key));
-        }
+            tbd = tablecreate_body(data)
 
-        tr.appendChild(td)
+            tbl.appendChild(tbd);
 
-        counte++;
-    };
+        };
+    }
+    else{
+        tbl = "<h1>Sin Datos</h1>";
+    }
 
-    thd.appendChild(tr);
-    tbl.appendChild(thd);
-
-    var tbd = document.createElement('tbody');
-
-    if (data != null && data != "" && Object.keys(data).length > 0)
-    {
-        tbd = tablecreate_body(data)
-
-        tbl.appendChild(tbd);
-
-    };
 
     jQuery(id).html(tbl);
-
 }
 
 function tableCreate_in(dt)
@@ -846,80 +892,12 @@ function ajax_ctrl(dr,ct,fn,tp,dt,ob)
     return rslt_ajax;
 }
 
-function ajax_ctrl_img(dr,ct,fn,tp,dt)
-{
-    rslt_ajax = '';
-
-    jQuery.ajax(
-            {
-                url: base_url+dr+ct+'_ajax/ajax_'+fn,
-                type: 'POST',
-                data: {pdt:dt},
-                cache: false,
-                // contentType: false,
-                // processData: false,
-
-                // Custom XMLHttpRequest
-                // xhr: function() {
-                //     var myXhr = $.ajaxSettings.xhr();
-                //     if (myXhr.upload) {
-                //         // For handling the progress of the upload
-                //         myXhr.upload.addEventListener('progress', function(e) {
-                //             if (e.lengthComputable) {
-                //                 $('progress').attr({
-                //                     value: e.loaded,
-                //                     max: e.total,
-                //                 });
-                //             }
-                //         } , false);
-                //     }
-                //     return myXhr;
-                // }
-            }
-        ).done(
-            function(dt_req)
-            {
-                var dtbl    = dt_req;
-
-                if (dtbl != null && dtbl.data.length > 0)
-                {
-                    rslt_ajax = dt_req.data;
-                }
-                else
-                {
-                    rslt_ajax = 0;
-                }
-
-            }
-        ).error(function(error)
-            {
-                console.log(error);
-            }
-        );
-
-    return rslt_ajax;
-}
-
 //
 //
-// Final de manejadores AJAX
+// Final de codgigo de manejadores de combobox
 //
 //  -------------------------------------------------------------------------
 //  -------------------------------------------------------------------------
-
-function date_today(d,f)
-{
-    var today = new Date();
-
-    var dd = d.day ? String(d.day) : String(today.getDate()).padStart(2, '0');
-    var mm = d.day ? String(d.month) : String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = d.day ? String(d.year) : today.getFullYear();
-
-    today = mm + '/' + dd + '/' + yyyy;
-
-    return today;
-
-}
 
 
 function obj_length(obj)
@@ -994,10 +972,13 @@ function cargador_anios(id,ini,end,order)
 function fill_form_error(id,fields)
 {
     for (var i = Object.keys(fields).length - 1; i >= 0; i--)
-        if(fields[Object.keys(fields)[i]]["nombre"] != "" ){
+    {
+        if(fields[Object.keys(fields)[i]]["nombre"] != "" )
+        {
             jQuery(".inline-block."+Object.keys(fields)[i]).css('display', 'inline');
             form_error("."+Object.keys(fields)[i]+"", fields[Object.keys(fields)[i]]);
         }
+    }
 }
 
 
@@ -1106,107 +1087,85 @@ function fdependencia(fd,ad)
     return "";
 }
 
-jQuery(window).on('load',function() {
-    if ( typeof(mx) !== 'undefined' && typeof(mx) === 'object' )
-        loadbtn(mx);
+function body_height()
+{
+    jQuery( "#left" ).addClass('cnt-body');
+    jQuery( "#content" ).addClass('cnt-body');
 
+    content_height = parseInt(
+      jQuery( "[class='admin']" ).css("height").replace("px","")
+    )
+    - (
+      parseInt(jQuery( "[class='head']" ).css("height").replace("px","")) +
+      parseInt(jQuery( "[id='top']" ).css("height").replace("px","")) +
+      parseInt(jQuery( "[id='footer']" ).css("height").replace("px",""))
+    );
 
-    // build table for list
-    build_table_verify();
+    jQuery( ".cnt-body" ).css( "height",content_height );
+}
 
-
-    if (typeof(fdt) !== 'undefined' && typeof(fdt) === 'object' && fdt['form_error'] === 'false')
+jQuery(window).resize(function()
     {
-        if(fdt['data']['form_continue'] === 'false')
-        {
-            if (!fdt['data'].hasOwnProperty('no_save'))
-                fill_form_error(".control",fdt['data']);
-            else
-                form_error(".no_save",fdt['data']['no_save']);
-        }
-        else if(fdt['data']['form_continue'] === 'true')
-        {
-            form_error_continue(".no_save",fdt['data']['no_save']);
-        }
+        var bodyh = setInterval(body_height(), 100);
 
+        clearInterval(bodyh);
     }
-    else if (typeof(fdt) !== 'undefined' && typeof(fdt) === 'object' && fdt.hasOwnProperty('sec')) {
-            form_error(".no_save",fdt.sec);
-    }
+)
 
-    if (typeof(fdt_n) !== 'undefined' && typeof(fdt_n) === 'object' && fdt_n['form_error'] === true)
+jQuery(document).ready(function()
     {
-        fdt_n['data']['no_save'].unshift({'nombre':'No puede agregar registro porque faltan los siguientes datos.'});
-        form_error(".no_save",fdt_n['data']['no_save']);
+        body_height();
     }
+);
+
+jQuery(window).on('load',function()
+    {
+        if (typeof dtbl !== "undefined" && typeof dtbl == "object")
+            v_cc = Object.keys(dtbl).length;
+
+        if ( typeof(mx) !== 'undefined' && typeof(mx) === 'object' )
+            loadbtn(mx);
 
 
-    if(jQuery('body').find('#srtbl1').length > 0)
-        ini_srtbl();
+        // build table for list
+        build_table_verify();
 
-    $('input[type="submit"]').click(function(e)
+
+        if (typeof(fdt) !== 'undefined' && typeof(fdt) === 'object' && fdt['form_error'] === 'false')
+        {
+            if(fdt['data']['form_continue'] === 'false')
             {
-               $('input[type="submit"]').attr('submit-button', 'disabled');
+                if (!fdt['data'].hasOwnProperty('no_save'))
+                    fill_form_error(".control",fdt['data']);
+                else
+                    form_error(".no_save",fdt['data']['no_save']);
             }
-        );
+            else if(fdt['data']['form_continue'] === 'true')
+            {
+                form_error_continue(".no_save",fdt['data']['no_save']);
+            }
 
-});
+        }
+        else if (typeof(fdt) !== 'undefined' && typeof(fdt) === 'object' && fdt.hasOwnProperty('sec')) {
+                form_error(".no_save",fdt.sec);
+        }
+
+        if (typeof(fdt_n) !== 'undefined' && typeof(fdt_n) === 'object' && fdt_n['form_error'] === true)
+        {
+            fdt_n['data']['no_save'].unshift({'nombre':'No puede agregar registro porque faltan los siguientes datos.'});
+            form_error(".no_save",fdt_n['data']['no_save']);
+        }
 
 
-/*
- * If any field is edited,then only it will change value on submit
- */
+        if(jQuery('body').find('#srtbl1').length > 0)
+            ini_srtbl();
 
-// text written
-// $(':text').keypress(function(e)
-// {
+        $('input[type="submit"]').click(function(e)
+                {
+                   $('input[type="submit"]').attr('submit-button', 'disabled');
+                }
+            );
 
-//     enableSaveBtn();
-// });
+    }
+);
 
-//backspace and delete key
-// $(':text').keyup(function(e)
-// {
-//     // if (e.keyCode == 8 || e.keyCode == 46) {
-
-//     //     // rest ignoreenableSaveBtn();
-//     // } else
-//     // {
-
-//     //     e.preventDefault();
-//     // }
-// });
-
-// // text pasted
-// $(':text').bind('paste', function(e)
-// {
-
-//     enableSaveBtn();
-// });
-
-// // select element changed
-// $('select').change(function(e)
-// {
-
-//     enableSaveBtn();
-// });
-
-// // radio changed
-// $(':radio').change(function(e)
-// {
-
-//     enableSaveBtn();
-// });
-
-// // password written
-// $(':password').keypress(function(e)
-// {
-
-//     enableSaveBtn();
-// });
-// // password pasted
-// $(':password').bind('paste', function(e)
-// {
-
-//     enableSaveBtn();
-// });
