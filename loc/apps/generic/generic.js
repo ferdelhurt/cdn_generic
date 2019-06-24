@@ -1,18 +1,18 @@
 
-url         = base_url+url_dir+url_pag;
+url      = base_url+url_dir+url_pag;
 
-sino        = [{"id":"1","ino":"SI"},{"id":"0","ino":"NO"}];
-cove        = [{"id":"0","ino":"Compras"},{"id":"1","ino":"Ventas"},{"id":"2","ino":"Prof. Inde. - Anual"}];
+sino     = [{"id":"1","ino":"SI"},{"id":"0","ino":"NO"}];
+cove     = [{"id":"0","ino":"Compras"},{"id":"1","ino":"Ventas"},{"id":"2","ino":"Prof. Inde. - Anual"}];
 
-facexen     = [{"id":"0","ino":"Pocentaje"},{"id":"1","ino":"Monto Fijo"}];
+facexen  = [{"id":"0","ino":"Pocentaje"},{"id":"1","ino":"Monto Fijo"}];
 
-vs_ad       = {"ta":{"1":"Activo","0":"Inactivo"},"td":{"1":"Eliminado","0":"No Eliminado"}};
+vs_ad    = {"ta":{"1":"Activo","0":"Inactivo"},"td":{"1":"Eliminado","0":"No Eliminado"}};
 
-ff_icons    = {"flu":{"1":"icon-lock","0":"icon-unlock"},"cok":{"1":"icon-ok-circle","0":"icon-remove"},"rem":{"0":"icon-remove"},"gru":{"0":"icon-group"}};
+ff_icons = {"flu":{"1":"icon-lock","0":"icon-unlock"},"cok":{"1":"icon-ok-circle","0":"icon-remove"},"rem":{"0":"icon-remove"},"gru":{"0":"icon-group"}};
 
-fshare      = [{"id":"1","ino":"Privada"},{"id":"0","ino":"Publica / Compartida"}];
+fshare   = [{"id":"1","ino":"Privada"},{"id":"0","ino":"Publica / Compartida"}];
 
-dfmes       = [{"id":"1","ino":"ENE"},{"id":"2","ino":"FEB"},{"id":"3","ino":"MAR"},{"id":"4","ino":"ABR"},{"id":"5","ino":"MAY"},{"id":"6","ino":"JUN"},{"id":"7","ino":"JUL"},{"id":"8","ino":"AGO"},{"id":"9","ino":"SEP"},{"id":"10","ino":"OCT"},{"id":"11","ino":"NOV"},{"id":"12","ino":"DIC"}]
+dfmes    = [{"id":"1","ino":"ENE"},{"id":"2","ino":"FEB"},{"id":"3","ino":"MAR"},{"id":"4","ino":"ABR"},{"id":"5","ino":"MAY"},{"id":"6","ino":"JUN"},{"id":"7","ino":"JUL"},{"id":"8","ino":"AGO"},{"id":"9","ino":"SEP"},{"id":"10","ino":"OCT"},{"id":"11","ino":"NOV"},{"id":"12","ino":"DIC"}]
 
 
 

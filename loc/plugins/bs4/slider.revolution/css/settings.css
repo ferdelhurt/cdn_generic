@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------
+/*---------------------------------------------------------------
 
 	-	Revolution Slider 4.1 Captions -
 
@@ -9,7 +9,7 @@ date:      	27/11/13
 author:		themepunch
 email:     	info@themepunch.com
 website:   	http://www.themepunch.com
------------------------------------------------------------------------------*/
+---------------------------------------------------------------*/
 
 
 
@@ -1311,7 +1311,7 @@ img.tp-slider-alternative-image	{	width:100%; height:auto;}
 		color-stop(0.13, rgb(0,0,0)),
 		color-stop(1, rgb(50,50,50))
 	);
-	
+
 	display:table;max-width:100%; overflow:hidden;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;
 }
 
