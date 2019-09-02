@@ -1,26 +1,34 @@
 
-url   = base_url+url_dir;
-
+url = base_url+url_dir;
 url_p = url+url_pag;
 
 
-sino  = [{"id":"1","ino":"SI"},{"id":"0","ino":"NO"}];
-cove  = [{"id":"0","ino":"Compras"},{"id":"1","ino":"Ventas"}];
+sino = [
+  {"id":"1","ino":"SI"},
+  {"id":"0","ino":"NO"}
+];
+cove = [
+  {"id":"0","ino":"Compras"},
+  {"id":"1","ino":"Ventas"}
+];
 
 vs_ad = {"ta":{"1":"Activo","0":"Inactivo"},"td":{"1":"Eliminado","0":"No Eliminado"}};
 
 vs_sn = {"1":"Si","0":"No"};
 
-facexen   = [{"id":"0","ino":"Pocentaje"},{"id":"1","ino":"Monto Fijo"}];
+facexen = [
+  {"id":"0","ino":"Pocentaje"},
+  {"id":"1","ino":"Monto Fijo"}
+];
 
-etipo     = [
+etipo = [
   {"id":1,"ino":"Privada"},
   {"id":2,"ino":"Publica"}
 ];
 
 vetipo = {};
 
-ff_icons  = {
+ff_icons = {
   "flu":{
     "1":"icon-lock",
     "0":"icon-unlock"
@@ -37,12 +45,12 @@ ff_icons  = {
   }
 };
 
-fshare    = [
+fshare = [
   {"id":"1","ino":"Privada"},
   {"id":"0","ino":"Publica / Compartida"}
 ];
 
-dfmes     = [
+dfmes = [
   {"id":"1","ino":"ENE"},
   {"id":"2","ino":"FEB"},
   {"id":"3","ino":"MAR"},
@@ -58,7 +66,7 @@ dfmes     = [
 ];
 
 
-vfn       = {
+vfn = {
   0:{"callfn":"get_depa","data":"","id":"#udepa","ajax":"ajxdepa","ubi":0},
   1:{"callfn":"get_prov","data":"","id":"#uprov","ajax":"ajxprov","ubi":1},
   2:{"callfn":"get_ciud","data":"","id":"#uciud","ajax":"ajxciud","ubi":2}
@@ -94,7 +102,7 @@ function createCookie(name,value,days)
 
 function readCookie(name)
 {
-  var nameEQ = name + "=";
+  var nEQ = name + "=";
   var ca = document.cookie.split(';');
 
   for(var i=0;i < ca.length;i++)
@@ -104,8 +112,8 @@ function readCookie(name)
     while (c.charAt(0)==' ')
       c = c.substring(1,c.length);
 
-    if (c.indexOf(nameEQ) == 0)
-      return c.substring(nameEQ.length,c.length);
+    if (c.indexOf(nEQ) == 0)
+      return c.substring(nEQ.length,c.length);
   }
 
   return null;
@@ -501,18 +509,32 @@ function select_option(id)
   }
 }
 
-function unselect_option(id)
-{
-  $( id ).prop("selected", false);
-}
-
-function addfirst_combo(id)
+function select_option_index(id,dx)
 {
   vl = id.split(' ');
 
   if( jQuery( vl[0] + ' option' ).size() > 0 )
   {
-    jQuery( id ).prepend( "<option value=\"0\"></option>" );
+    jQuery( id ).attr('selected','selected');
+  }
+}
+
+function unselect_option(id)
+{
+  $( id ).prop("selected", false);
+}
+
+function addfirst_combo(id,tx)
+{
+  vl = id.split(' ');
+
+  if (!tx) {
+    tx = '';
+  };
+
+  if( jQuery( vl[0] + ' option' ).size() > 0 )
+  {
+    jQuery( id ).prepend( "<option value=\"0\">"+tx+"</option>" );
   }
 }
 
@@ -593,7 +615,16 @@ function fill_combos(id,dt)
 {
   empty_combo( id );
   fill_combo( id, dt );
-  addfirst_combo( id );
+  // addfirst_combo( id );
+
+  update_chosen( id );
+}
+
+function fill_combos_custom(id,dt,nb,ndt)
+{
+  empty_combo( id );
+  fill_combo( id, dt, nb, ndt );
+  // addfirst_combo( id );
 
   update_chosen( id );
 }
@@ -864,9 +895,26 @@ function tableCreate_in(dt)
 
   tbl.setAttribute('class','table table-bordered table-condensed');
 
+  var ts = 0,
+      cr = Object.keys(dt.tblcss.td.w).length;
+
+  for (var i = cr - 1; i >= 0; i--) {
+    ts += dt.tblcss.td.w[i];
+  };
+
+  if (dt.hasOwnProperty('tblcss'))
+    ts = ( 100 - ts ) / ( dt.tblcss.td.cc - cr );
+
+  dt.tblcss.td.w["dflt"] = ts;
+
   for (var key in dt.thead)
   {
     var td = document.createElement('td');
+
+    if (dt.hasOwnProperty('tblcss'))
+    {
+      td.setAttribute("width", (typeof dt.tblcss.td.w[counte] !== "undefined")? dt.tblcss.td.w[counte] + "%" : dt.tblcss.td.w["dflt"] + "%" );
+    };
 
     if (typeof dt.thead[counte] !== 'undefined')
     {
@@ -970,7 +1018,7 @@ function ajax_ctrl(dr,ct,fn,tp,dt,ob)
 
 //
 //
-// Final de codgigo de manejadores de combobox
+// Final de codgigo de manejadores AJAX
 //
 //  -----------------------------------------------------------
 //  -----------------------------------------------------------
@@ -1024,7 +1072,7 @@ function get_ubicacion(vfn,ubi)
 
 //
 //
-// Final de codgigo de manejadores de ubicaciones
+// Final de codgigo de manejador ubicaciones
 //
 //  -----------------------------------------------------------
 //  -----------------------------------------------------------
@@ -1117,7 +1165,6 @@ function fill_form_error(id,fields)
     }
   }
 }
-
 
 
 function enable_form()
@@ -1239,8 +1286,7 @@ function body_height()
 
   content_height = parseInt(
     jQuery( "[class='admin']" ).css("height").replace("px","")
-  )
-  - (
+  ) - (
     parseInt(jQuery( "[class='head']" ).css("height").replace("px","")) +
     parseInt(jQuery( "[id='top']" ).css("height").replace("px","")) +
     parseInt(jQuery( "[id='footer']" ).css("height").replace("px","")) + 2
@@ -1258,6 +1304,13 @@ jQuery(window).resize(function()
 )
 
 jQuery(document).ready(function()
+  {
+    body_height();
+
+  }
+);
+
+jQuery( "#content > .container-fluid.outer" ).resize(function()
   {
     body_height();
 

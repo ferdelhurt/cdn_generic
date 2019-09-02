@@ -1,27 +1,27 @@
 (function( $ ) {
 	'use strict';
-	
+
 	$(document).ready(function(){
 		var interval = parseInt(rev_slider_weather_addon.interval);
-		
+
 
 		window.updateWeather();
-		if(interval>0){			
+		if(interval>0){
 			self.setInterval(window.updateWeather, interval*60000);
 		}
 	});
 
-	window.updateWeather = function() {		
+	window.updateWeather = function() {
 		$('.tp-revslider-mainul li').each(function(){
-		 	
-		 	var $this = $(this);
-		 	var $data = $this.data("param10");		 	
-		 	var url = ""; 
 
-		 	
-			var name = $data["revslider-weather-addon"]["name"]; 
-			var type = $data["revslider-weather-addon"]["type"]; 
-			var woeid = $data["revslider-weather-addon"]["woeid"]; 
+		 	var $this = $(this);
+		 	var $data = $this.data("param10");
+		 	var url = "";
+
+
+			var name = $data["revslider-weather-addon"]["name"];
+			var type = $data["revslider-weather-addon"]["type"];
+			var woeid = $data["revslider-weather-addon"]["woeid"];
 			var unit = $data["revslider-weather-addon"]["unit"];
 
 			if(type == "woeid"){
@@ -31,18 +31,18 @@
 				url = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22' + name + '%2C%20ak%22)%20and%20u="' + unit + '"&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
 			}
 
-			
+
 
 			$.getJSON(
 				url,
 				function(data) {
-					
-					
+
+
 					if(data && typeof data === 'object' && data.hasOwnProperty('query') && data.query.hasOwnProperty('results') && data.query.results.hasOwnProperty('channel')) {
-						
+
 						var weather_info = data["query"]["results"]["channel"];
 						//if(typeof weather_info != "undefined"){
-						 
+
 						$this.find("span.revslider_data_weather_title").text(weather_info["title"]);
 						$this.find("span.revslider_data_weather_title").text(weather_info["title"]);
 						$this.find("span.revslider_data_weather_temp").text(weather_info["item"]["condition"]["temp"]);
@@ -77,7 +77,7 @@
 						$this.find("span.revslider_data_weather_wind_speed").text(weather_info["wind"]["speed"]);
 						$this.find("span.revslider_data_weather_description").text(weather_info["description"]);
 						$this.find("span.revslider_data_weather_icon").html('<i class=\"revslider-weather-icon revslider-weather-icon-' + weather_info["item"]["forecast"][0]["code"] + '\"></i>');
-						
+
 						for(var i=0;i<10;i++){
 							$this.find("span.revslider_data_weather_date_forecast_"+i).text(weather_info["item"]["forecast"][i]["date"]);
 							$this.find("span.revslider_data_weather_day_forecast_"+i).text(weather_info["item"]["forecast"][i]["day"]);
@@ -104,7 +104,7 @@
 	function get_alt_temp(unit, temp) {
 	    if(unit === 'F') {
 	      return fahrenheit_to_celsius(temp);
-	    } 
+	    }
 	    else {
 	      return celsius_to_fahrenheit(temp);
 	    }
