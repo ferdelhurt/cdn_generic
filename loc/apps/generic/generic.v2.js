@@ -211,9 +211,13 @@ function loadbtn(m0)
         case 'a':
           slc = 'a';
           break;
+        case 'a2':
+          slc = 'a2';
+          break;
         case 'a-extra':
           // slc = 'a-2';
-          jQuery( m0[btn]['tag'] ).append( add_link(m0[btn]['btn'][i]) );
+          // jQuery( "#" + slc + "-tmpl" ).tmpl( m0[btn]['btn'][i] ).appendTo( m0[btn]['tag'] );
+          jQuery( m0[btn]['tag'] ).append( add_link( m0[btn]['btn'][i] ) );
           continue;
           break;
         case 'text':
@@ -551,6 +555,16 @@ function empty_combo(id)
 
 function fill_combo(id,dt,nb,ndt)
 {
+  if (typeof dt === 'object' && dt.length > 0 )
+  {
+    jQuery( id ).html( jQuery( "#cbx-combo-tmpl-options" ).tmpl( dt ) );
+  }
+  else
+  {
+    jQuery( id ).html( jQuery( "#cbx-combo-tmpl-options" ).tmpl( null ) );
+  }
+
+
   if (typeof nb  !== 'undefined'  )
   {
     ndt = 'Seleccione un(a) ' + nb;
@@ -562,18 +576,9 @@ function fill_combo(id,dt,nb,ndt)
 
   if (!dt)
   {
-    ndt = 'No tiene ningun Dato'
+    ndt = 'Sin Datos'
   };
 
-
-  if (typeof dt === 'object' && dt.length > 0 )
-  {
-    jQuery( id ).html( jQuery( "#cbx-combo-tmpl-options" ).tmpl( dt ) );
-  }
-  else
-  {
-    jQuery( id ).html( jQuery( "#cbx-combo-tmpl-options" ).tmpl( null ) );
-  }
 
   jQuery( id ).attr('data-placeholder',ndt);
 
@@ -593,7 +598,7 @@ function fill_combo_group(id,dt,nb,ndt)
 
   if (!dt)
   {
-    ndt = 'No tiene ningun Dato'
+    ndt = 'Sin Datos'
   };
 
 
@@ -1284,8 +1289,30 @@ function body_height()
   jQuery( "#left" ).addClass('cnt-body');
   jQuery( "#content" ).addClass('cnt-body');
 
+  if (jQuery( "[class='head']" ).length < 1 || jQuery( "[id='top']" ).length < 1) {
+    return false;
+  };
+
+  hheigth = (
+      parseInt(
+        jQuery( document ).height()
+      ) < parseInt(
+        jQuery( "[class='admin']" ).scrollHeight
+      )
+    ) ? (
+      parseInt(
+        jQuery( "[class='admin']" )[0].scrollHeight
+      ) < parseInt(
+        jQuery( "[class='admin']" ).css("height").replace("px","")
+      )
+    ) ?
+        jQuery( "[class='admin']" )[0].scrollHeight
+      :
+        parseInt(jQuery( "[class='admin']" ).css("height").replace("px",""))
+    : jQuery( document ).height();
+
   content_height = parseInt(
-    jQuery( "[class='admin']" ).css("height").replace("px","")
+    hheigth
   ) - (
     parseInt(jQuery( "[class='head']" ).css("height").replace("px","")) +
     parseInt(jQuery( "[id='top']" ).css("height").replace("px","")) +
